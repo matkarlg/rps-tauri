@@ -1,0 +1,6 @@
+comment_width = 100
+hard_tabs = true
+imports_granularity = "Crate"
+use_field_init_shorthand = true
+wrap_comments = true
+unstable_features = true
