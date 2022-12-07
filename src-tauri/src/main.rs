@@ -3,49 +3,12 @@
 	windows_subsystem = "windows"
 )]
 
-use rand::seq::IteratorRandom;
-use std::str::FromStr;
-use strum::{EnumIter, IntoEnumIterator};
+mod game;
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-#[tauri::command]
-fn game(hand: &str) -> Result<String, String> {
-	let player: Choice = hand.parse().map_err(|_| "Bad spelling. try again...")?;
-	let computer = Choice::iter().choose(&mut rand::thread_rng()).unwrap();
-
-	use self::Choice::*;
-	let result = match (&player, &computer) {
-		(Paper, Rock) | (Scissors, Paper) | (Rock, Scissors) => "You Win!",
-		_ if player == computer => "Tie!",
-		_ => "Computer Wins!",
-	};
-
-	Ok(result.into())
-}
-
 fn main() {
 	tauri::Builder::default()
-		.invoke_handler(tauri::generate_handler![game])
+		.invoke_handler(tauri::generate_handler![game::play, game::scoreboard])
 		.run(tauri::generate_context!())
 		.expect("error while running tauri application");
-}
-
-#[derive(Debug, EnumIter, PartialEq)]
-enum Choice {
-	Rock,
-	Paper,
-	Scissors,
-}
-
-impl FromStr for Choice {
-	type Err = ();
-
-	fn from_str(s: &str) -> Result<Self, Self::Err> {
-		match s.trim().to_lowercase().as_str() {
-			"r" | "rock" => Ok(Choice::Rock),
-			"p" | "paper" => Ok(Choice::Paper),
-			"s" | "scissors" => Ok(Choice::Scissors),
-			_ => Err(()),
-		}
-	}
 }
