@@ -44,6 +44,7 @@ jobs:
         run: cargo clippy --all-features --manifest-path src-tauri/Cargo.toml
 
       - name: Lint (rustfmt)
+        if: matrix.platform != 'windows-latest'
         run: cargo fmt --check --manifest-path src-tauri/Cargo.toml
 
       - run: corepack enable
