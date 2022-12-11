@@ -30,15 +30,15 @@
   transition: 0.75s;
 }
 
-.logo.tauri:hover {
+.logo.rock:hover {
   filter: drop-shadow(0 0 2em #24c8db);
 }
 
-.logo.vite:hover {
+.logo.paper:hover {
   filter: drop-shadow(0 0 2em #747bff);
 }
 
-.logo.solid:hover {
+.logo.scissors:hover {
   filter: drop-shadow(0 0 2em #54a4ff);
 }
 

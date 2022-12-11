@@ -4,3 +4,4 @@ imports_granularity = "Crate"
 use_field_init_shorthand = true
 wrap_comments = true
 unstable_features = true
+newline_style = "Unix"
