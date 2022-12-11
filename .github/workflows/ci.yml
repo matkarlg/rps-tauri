@@ -46,14 +46,12 @@ jobs:
       - name: Lint (rustfmt)
         run: cargo fmt --check --manifest-path src-tauri/Cargo.toml
 
+      - run: corepack enable
       - name: Sync node version and setup cache
         uses: actions/setup-node@v3
         with:
           node-version: "lts/*"
           cache: "pnpm"
-
-      - name: Sync packageManager
-        run: corepack enable && corepack prepare
 
       - name: Install app dependencies
         run: pnpm install
