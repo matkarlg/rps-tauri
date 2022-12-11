@@ -38,6 +38,8 @@ jobs:
         with:
           workspaces: "./src-tauri -> target"
 
+      - run: mkdir dist
+
       - name: Lint (clippy)
         run: cargo clippy --all-features --manifest-path src-tauri/Cargo.toml
 
