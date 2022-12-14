@@ -1,10 +1,9 @@
-use once_cell::sync::OnceCell;
 use serde::Serialize;
 use std::sync::Mutex;
 
 use super::game::Outcome;
 
-#[derive(Debug, Default, Serialize)]
+#[derive(Debug, Serialize)]
 pub struct Scoreboard {
 	wins: u32,
 	losses: u32,
@@ -13,12 +12,13 @@ pub struct Scoreboard {
 
 impl Scoreboard {
 	pub fn global() -> &'static Mutex<Self> {
-		static INSTANCE: OnceCell<Mutex<Scoreboard>> = OnceCell::new();
-		INSTANCE.get_or_init(|| Mutex::new(Scoreboard::default()))
+		static SCOREBOARD: Mutex<Scoreboard> = Mutex::new(Scoreboard::new());
+		&SCOREBOARD
 	}
 
 	pub fn add(score: &Outcome) -> &str {
-		let mut global = Scoreboard::global().lock().unwrap();
+		let _global = Scoreboard::global();
+		let mut global = _global.lock().unwrap();
 		match score {
 			Outcome::Win => {
 				global.wins += 1;
@@ -36,14 +36,18 @@ impl Scoreboard {
 	}
 
 	pub fn reset() {
-		let mut global = Scoreboard::global().lock().unwrap();
-		global.wins = 0;
-		global.losses = 0;
-		global.draws = 0;
+		*Scoreboard::global().lock().unwrap() = Self::new()
 	}
 
 	pub fn show() -> serde_json::Value {
-		let global = Scoreboard::global().lock().unwrap();
-		serde_json::to_value(&*global).unwrap()
+		serde_json::to_value(&*Scoreboard::global().lock().unwrap()).unwrap()
+	}
+
+	const fn new() -> Self {
+		Self {
+			wins: 0,
+			losses: 0,
+			draws: 0,
+		}
 	}
 }
