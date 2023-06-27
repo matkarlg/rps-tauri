@@ -32,7 +32,7 @@ pub enum Outcome {
 	Draw = 3,
 }
 
-#[derive(Debug, EnumIter, PartialEq, Serialize, Clone, Copy)]
+#[derive(Debug, EnumIter, PartialEq, Serialize, Clone)]
 pub enum Choice {
 	Rock = 1,
 	Paper,
